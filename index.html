@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Will You Be My Valentine?</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      background-color: #fff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .container {
+      text-align: center;
+      max-width: 500px;
+      padding: 20px;
+    }
+
+    .bear-img {
+      width: 200px;
+      height: auto;
+      margin: 20px auto;
+      position: relative;
+    }
+
+    .hearts {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .heart {
+      position: absolute;      font-size: 1.2rem;
+      color: #ff69b4;
+      animation: float 3s infinite ease-in-out;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0) translateX(0) rotate(0deg); }
+      50% { transform: translateY(-30px) translateX(20px) rotate(180deg); }
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 30px;
+      color: #333;
+    }
+
+    .buttons {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      margin-top: 30px;
+    }
+
+    .btn {
+      padding: 15px 30px;
+      font-size: 1.5rem;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: bold;
+    }
+
+    .btn-yes {
+      background: #28a745;
+      color: white;
+      flex: 1;
+      min-width: 120px;
+    }
+
+    .btn-no {
+      background: #dc3545;
+      color: white;
+      min-width: 120px;
+      position: relative;
+    }
+
+    .btn-no:hover {
+      transform: scale(1.05);
+    }
+    .btn-no::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 12px;
+      height: 12px;
+      background: white;
+      border-radius: 50%;
+      transform: translate(-50%, -50%) rotate(45deg);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .btn-no:hover::after {
+      opacity: 1;
+    }
+
+    /* Fullscreen YES */
+    .fullscreen-yes {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #28a745;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+      color: white;
+      font-size: 6rem;
+      text-shadow: 0 0 20px rgba(0,0,0,0.3);
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .fullscreen-yes.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    /* Celebration screen */
+    .celebration {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;      height: 100%;
+      background: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 200;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .celebration.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .celebration img {
+      width: 250px;
+      height: auto;
+      margin-bottom: 30px;
+    }
+
+    .celebration h2 {
+      font-size: 3rem;
+      color: #e74c3c;
+      text-align: center;
+      margin: 20px;
+    }
+
+    /* Responsive */
+    @media (max-width: 480px) {
+      h1 { font-size: 2rem; }
+      .btn { padding: 12px 20px; font-size: 1.3rem; }
+      .fullscreen-yes { font-size: 4rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMDAiIGhlaWdodD0iMTUwIiB2aWV3Qm94PSIwIDAgMjAwIDE1MCI+CiAgPHJlY3Qgd2lkdGg9IjIwMCIgaGVpZ2h0PSIxNTAiIGZpbGw9IiNmZmYiLz4KICA8Y2lyY2xlIGN4PSI4MCIgY3k9IjcwIiByPSI1MCIgZmlsbD0iI2Q5YjI4MCIvPgogIDxjaXJjbGUgY3g9IjEyMCIgY3k9IjcwIiByPSI1MCIgZmlsbD0iI2Q5YjI4MCIvPgogIDxjaXJjbGUgY3g9IjgwIiBjeT0iNjAiIHI9IjEwIiBmaWxsPSIjZmZmIi8+CiAgPGNpcmNsZSBjeD0iMTIwIiBjeT0iNjAiIHI9IjEwIiBmaWxsPSIjZmZmIi8+CiAgPGNpcmNsZSBjeD0iODAiIHN0eWxlPSJmaWxsOiMzMzM7IiBjeT0iNzUiIHI9IjMiLz4KICA8Y2lyY2xlIGN4PSIxMjAiIHN0eWxlPSJmaWxsOiMzMzM7IiBjeT0iNzUiIHI9IjMiLz4KICA8cGF0aCBkPSJNNjAgMTAwIEM2MCAxMTAgNzAgMTE1IDgwIDExNSBDOTAgMTE1IDEwMCAxMTAgMTAwIDEwMCBMODAgMTAwIFoiIGZpbGw9IiNmZmYiLz4KICA8cGF0aCBkPSJNMTQwIDEwMCBDMTQwIDExMCAxNTAgMTE1IDE2MCAxMTUgQzE3MCAxMTUgMTgwIDExMCAxODAgMTAwIEwxNjAgMTAwIFoiIGZpbGw9IiNmZmYiLz4KICA8cGF0aCBkPSJNODAgMTIwIEM4MCAxMzAgOTAgMTM1IDEwMCAxMzUgQzExMCAxMzUgMTIwIDEzMCAxMjAgMTIwIEwxMDAgMTIwIFoiIGZpbGw9IiNmZmYiLz4KICA8cGF0aCBkPSJNMTIwIDEyMCBDMTIwIDEzMCAxMzAgMTM1IDE0MCAxMzUgQzE1MCAxMzUgMTYwIDEzMCAxNjAgMTIwIEwxNDAgMTIwIFoiIGZpbGw9IiNmZmYiLz4KICA8cGF0aCBkPSJNMTAwIDEwMCBMOTAgOTAgMTAwIDgwIEMxMTAgOTAgMTEwIDEwMCAxMDAgMTAwIFoiIGZpbGw9IiNmZmYiLz4KICA8cGF0aCBkPSJNMTAwIDEwMCBMMTIwIDkwIDEwMCA4MCBDOTAgOTAgOTAgMTAwIDEwMCAxMDAgWiIgZmlsbD0iI2ZmZiIvPgogIDxwYXRoIGQ9Ik04MCAxMDAgTDcwIDkwIDgwIDgwIEM5MCA5MCA5MCAxMDAgODAgMTAwIFoiIGZpbGw9IiNmZmYiLz4KICA8cGF0aCBkPSJNMTIwIDEwMCBMMTMwIDkwIDEyMCA4MCBDMTEwIDkwIDExMCAxMDAgMTIwIDEwMCBaIiBmaWxsPSIjZmZmIi8+CiAgPHBhdGggZD0iTTEwMCAxMjAgQzEwMCAxMzAgMTIwIDEzNSAxMzAgMTM1IEMxNDAgMTM1IDE2MCAxMzAgMTYwIDEyMCBMMTQwIDEyMCBaIiBmaWxsPSIjZmZmIi8+CiAgPHBhdGggZD0iTTEwMCAxMjAgQzEwMCAxMzAgODAgMTM1IDcwIDEzNSBDNjAgMTM1IDQwIDEzMCA0MCAxMjAgTDgwIDEyMCBaIiBmaWxsPSIjZmZmIi8+CiAgPHBhdGggZD0iTTEwMCAxMjAgTDgwIDEwMCBMMTIwIDEwMCBaIiBmaWxsPSIjZDliMjgwIi8+CiAgPHBhdGggZD0iTTEwMCAxMjAgTDgwIDEwMCBMMTIwIDEwMCBaIiBmaWxsPSIjZDliMjgwIi8+CiAgPHBhdGggZD0iTTEwMCAxMjAgTDgwIDEwMCBMMTIwIDEwMCBaIiBmaWxsPSIjZDliMjgwIi8+CiAgPHBhdGggZD0iTTEwMCAxMjAgTDgwIDEwMCBMMTIwIDEwMCBaIiBmaWxsPSIjZDliMjgwIi8+CiAgPHBhdGggZD0iTTEwMCAxMjAgTDgwIDEwMCBMMTIwIDEwMCBaIiBmaWxsPSIjZDliMjgwIi8+CiAgPHBhdGggZD0iTTEwMCAxMjAgTDgwIDEwMCBMMTIwIDEwMCBaIiBmaxsPSIjZDliMjgwIi8+CiAgPHBhdGggZD0iTTEwMCAxMjAgTDgwIDEwMCBMMTIwIDEwMCBaIiBmaWxsPSIjZDliMjgwIi8+CiAgPHBhdGggZD0iTTEwMCAxMjAgTDgwIDEwMCBMMTIwIDEwMCBaIiBmaWxsPSIjZDliMjgwIi8+CiAgPHBhdGggZD0iTTEwMCAxMjAgTDgwIDEwMCBMMTIwIDEwMCBaIiBmaWxsPSIjZDliMjgwIi8+CiAgPHBhdGggZD0iTTEwMCAxMjAgTDgwIDEwMCBMMTIwIDEwMCBaIiBmaWxsPSIjZDliMjgwIi8+CiAgPHBhdGggZD0iTTEwMCAxMjAgTDgwIDEwMCBMMTIwIDEwMCBaIiBmaWxsPSIj
